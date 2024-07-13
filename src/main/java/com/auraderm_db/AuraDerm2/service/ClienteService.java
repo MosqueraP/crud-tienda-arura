@@ -1,6 +1,5 @@
 package com.auraderm_db.AuraDerm2.service;
 
-import com.auraderm_db.AuraDerm2.model.Categoria;
 import com.auraderm_db.AuraDerm2.model.Cliente;
 import com.auraderm_db.AuraDerm2.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

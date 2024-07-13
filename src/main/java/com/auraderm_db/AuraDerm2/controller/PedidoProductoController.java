@@ -2,6 +2,7 @@ package com.auraderm_db.AuraDerm2.controller;
 
 import com.auraderm_db.AuraDerm2.model.Pedido_producto;
 import com.auraderm_db.AuraDerm2.service.PedidoProductoService;
+import com.auraderm_db.AuraDerm2.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ public class PedidoProductoController {
     @Autowired
     private PedidoProductoService pedidoProductoService;
 
+    @Autowired
+    private ProductoService productoService;
+
     @GetMapping("/todos")
     public List<Pedido_producto> getAllPedidProd(){
         return pedidoProductoService.getAllPedProd();
@@ -26,8 +30,13 @@ public class PedidoProductoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProducto(@PathVariable Long id){
-        pedidoProductoService.deletePedProd(id);
+    public String deleteProducto(@PathVariable Long id){
+        try {
+            productoService.deleteProducto(id);
+            return "Producto eliminado correctamente.";
+        } catch (Exception e) {
+            return "Error al eliminar el producto: " + e.getMessage();
+        }
     }
 
     @PutMapping("/{id}")

@@ -18,12 +18,7 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id")
-    @JsonIgnore
-    private Categoria categoria;
-
-    @Column(length = 40)
+    @Column(length = 100)
     private String descripcion;
 
     @Column(length = 35)
