@@ -29,11 +29,14 @@ public class Producto {
 
     private int stock;
 
-    // Constructor sin el campo de categoría para facilitar la creación
-    public Producto(String descripcion, String nombre, BigDecimal precio, int stock) {
+    @Column(length = 50)
+    private String categoria;
+
+    public Producto(String descripcion, String nombre, BigDecimal precio, int stock, String categoria) {
         this.descripcion = descripcion;
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
+        this.categoria = categoria;
     }
 }

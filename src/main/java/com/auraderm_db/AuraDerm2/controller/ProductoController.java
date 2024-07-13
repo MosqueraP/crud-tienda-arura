@@ -6,37 +6,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
+
     @Autowired
     private ProductoService productoService;
 
     @GetMapping("/todos")
-    public List<Producto> getAllProductos(){
+    public List<Producto> getAllProductos() {
         return productoService.getAllProductos();
     }
 
-    @PostMapping("/add")
-    public Producto saveProducto(@RequestBody Producto producto){
+    @GetMapping("buscar/{id}")
+    public ResponseEntity<Producto> getProductoById(@PathVariable Long id) {
+        Optional<Producto> producto = productoService.getProductoById(id);
+        return producto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/crear")
+    public Producto crearProducto(@RequestBody Producto producto) {
         return productoService.saveProducto(producto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProducto(@PathVariable Long id){
-        productoService.deleteProducto(id);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<String> actualizarProducto(@PathVariable Long id, @RequestBody Producto productoActualizar) {
-        boolean actualizado = productoService.actualizarProducto(id, productoActualizar);
-        if (actualizado) {
-            return ResponseEntity.ok("Producto editado correctamente");
+    @PutMapping("actualizar/{id}")
+    public ResponseEntity<String> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        boolean updated = productoService.updateProducto(id, producto);
+        if (updated) {
+            return ResponseEntity.ok("Producto actualizado exitosamente");
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-
+    @DeleteMapping("delete-id/{id}")
+    public ResponseEntity<String> eliminarProducto(@PathVariable Long id) {
+        productoService.deleteProducto(id);
+        return ResponseEntity.ok("Producto eliminado exitosamente");
+    }
 }

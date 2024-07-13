@@ -1,58 +1,48 @@
 package com.auraderm_db.AuraDerm2.service;
+import com.auraderm_db.AuraDerm2.model.Categoria;
 import com.auraderm_db.AuraDerm2.model.Producto;
+import com.auraderm_db.AuraDerm2.repository.CategoriaRepository;
 import com.auraderm_db.AuraDerm2.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class ProductoService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductoService.class);
-
     @Autowired
     private ProductoRepository productoRepository;
 
-    //traer todos los productos
-    public List<Producto> getAllProductos(){
+    public List<Producto> getAllProductos() {
         return productoRepository.findAll();
     }
 
+    public Optional<Producto> getProductoById(Long id) {
+        return productoRepository.findById(id);
+    }
 
-    //guardar producto
-    public Producto saveProducto(Producto producto){
+    public Producto saveProducto(Producto producto) {
         return productoRepository.save(producto);
     }
 
-    //eliminar producto
     public void deleteProducto(Long id) {
-        try {
-            logger.info("Intentando eliminar producto con id: {}", id);
-            productoRepository.deleteById(id);
-            logger.info("Producto eliminado correctamente con id: {}", id);
-        } catch (Exception e) {
-            logger.error("Error al eliminar producto con id: {}", id, e);
-            throw e;
-        }
+        productoRepository.deleteById(id);
     }
 
-    public boolean actualizarProducto(Long id, Producto productoActualizar) {
-        Optional<Producto> productoExistente = productoRepository.findById(id);
-        if (productoExistente.isPresent()) {
-            Producto producto = productoExistente.get();
+    public boolean updateProducto(Long id, Producto productoActualizar) {
+        Optional<Producto> optionalProducto = productoRepository.findById(id);
+        if (optionalProducto.isPresent()) {
+            Producto producto = optionalProducto.get();
             producto.setDescripcion(productoActualizar.getDescripcion());
             producto.setNombre(productoActualizar.getNombre());
             producto.setPrecio(productoActualizar.getPrecio());
             producto.setStock(productoActualizar.getStock());
+            producto.setCategoria(productoActualizar.getCategoria());
             productoRepository.save(producto);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-
-
 }

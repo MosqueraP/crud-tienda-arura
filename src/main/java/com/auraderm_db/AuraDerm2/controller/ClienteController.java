@@ -3,6 +3,7 @@ package com.auraderm_db.AuraDerm2.controller;
 import com.auraderm_db.AuraDerm2.model.Cliente;
 import com.auraderm_db.AuraDerm2.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,4 +40,5 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
